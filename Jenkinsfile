@@ -38,28 +38,29 @@ pipeline {
         }         
 		stage('Plan') {
 			steps {
-                dir("deployment") {
-                    echo 'Planning....'
-                    sh "terraform init"
-                    sh "terraform get -update=true"
-                    sh "terraform plan -input=false -out=tfplan -var \"docker_image=${TAGGED_IMAGE_NAME}\" -var \"aws_access_key=${AWS_ACCESS_KEY_ID}\" -var \"aws_secret_key=${AWS_SECRET_ACCESS_KEY}\""
+               dir("deployment") {
+                    ansiColor('xterm') {
+                        echo 'Planning....'
+                        sh "terraform init"
+                        sh "terraform get -update=true"
+                        sh "terraform plan -input=false -out=tfplan -var \"docker_image=${TAGGED_IMAGE_NAME}\" -var \"aws_access_key=${AWS_ACCESS_KEY_ID}\" -var \"aws_secret_key=${AWS_SECRET_ACCESS_KEY}\""
+                    }
                 }
 			}
 		}	
 		stage('Deploy') {
 			steps {
                 dir("deployment") {
-                    echo 'Deploying....'
-                    sh "terraform apply -input=false tfplan "
+                    ansiColor('xterm') {
+                        echo 'Deploying....'
+                        sh "terraform apply -input=false tfplan "
+                    }
                 }
 			}
 		}	
 		stage('Test') {
 			steps {
-                dir("deployment") {
-                    echo 'Testing...'
-                    sh "terraform show"
-                }
+                echo 'Testing...'
 			}
 		}
 	}
