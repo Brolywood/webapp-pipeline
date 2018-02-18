@@ -1,6 +1,19 @@
-# Compiled files
+# .tfstate files
 *.tfstate
-*.tfstate.backup
+*.tfstate.*
 
-# Module directory
-.terraform/
+# .tfvars files
+*.tfvars
+
+# Local plan files
+*.tfplan
+*.tfplan.*
+
+# Local .terraform directories
+**/.terraform/*
+
+# Maven and Eclipse
+.classpath
+.project
+.settings/
+target/
