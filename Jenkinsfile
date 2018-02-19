@@ -41,9 +41,21 @@ pipeline {
                dir("deployment") {
                     ansiColor('xterm') {
                         echo 'Planning....'
-                        sh "terraform init"
-                        sh "terraform get -update=true"
-                        sh "terraform plan -input=false -out=tfplan -var \"docker_image=${TAGGED_IMAGE_NAME}\" -var \"aws_access_key=${AWS_ACCESS_KEY_ID}\" -var \"aws_secret_key=${AWS_SECRET_ACCESS_KEY}\""
+                        sh '''
+                          terraform init -backend-config="bucket=${aws_region}" \
+                                         -backend-config="key=webapp/terraform.tfstate" \
+                                         -backend-config="region=${aws_region}" \
+                                         -backend-config="access_key=${AWS_ACCESS_KEY_ID}" \
+                                         -backend-config="secret_key=${AWS_SECRET_ACCESS_KEY}" \
+                                         -backend=true -force-copy -get=true -input=false
+                          terraform get -update=true
+                          terraform plan -input=false \
+                                         -out=tfplan \
+                                         -var "aws_region=${aws_region}" \
+                                         -var "docker_image=${TAGGED_IMAGE_NAME}" \
+                                         -var "aws_access_key=${AWS_ACCESS_KEY_ID}" \
+                                         -var "aws_secret_key=${AWS_SECRET_ACCESS_KEY}"
+                        '''
                     }
                 }
 			}
@@ -53,7 +65,7 @@ pipeline {
                 dir("deployment") {
                     ansiColor('xterm') {
                         echo 'Deploying....'
-                        sh "terraform apply -input=false tfplan "
+                        sh "terraform apply -input=false tfplan"
                     }
                 }
 			}
