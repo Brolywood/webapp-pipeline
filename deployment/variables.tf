@@ -40,13 +40,13 @@ variable "asg_desired" {
 }
 
 variable "aws_key_name" {
-    default = "admin_ssh_key"
+  default = "admin_ssh_key"
 }
 
 variable "aws_key_path" {
-    default = "./keys/admin_ssh_key.pub"
+  default = "./keys/admin_ssh_key.pub"
 }
 
 variable "docker_image" {
-    default = "webapp/latest"
+  default = "webapp:latest"
 }
