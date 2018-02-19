@@ -42,7 +42,7 @@ pipeline {
                     ansiColor('xterm') {
                         echo 'Planning....'
                         sh '''
-                          terraform init -backend-config="bucket=${aws_region}" \
+                          terraform init -backend-config="bucket=${s3_bucket}" \
                                          -backend-config="key=webapp/terraform.tfstate" \
                                          -backend-config="region=${aws_region}" \
                                          -backend-config="access_key=${AWS_ACCESS_KEY_ID}" \
