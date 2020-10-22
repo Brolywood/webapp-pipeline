@@ -56,7 +56,7 @@ resource "aws_autoscaling_group" "web-asg" {
   load_balancers       = ["${aws_elb.web-elb.name}"]
   vpc_zone_identifier  = ["${aws_subnet.default.id}"]
 
-  tag = [
+  tags = [
     {
       key                 = "Name"
       value               = "webapp-server"
