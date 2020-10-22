@@ -74,7 +74,7 @@ resource "aws_autoscaling_group" "web-asg" {
 data "template_file" "webapp_install" {
   template = "${file("webapp_install.tpl")}"
 
-  vars {
+  vars = {
     docker_image = "${var.docker_image}"
   }
 }
